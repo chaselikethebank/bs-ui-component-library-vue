@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UI Component Library - Vue Edition</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+    
+    <!-- Vue.js and Vue Router CDN -->
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/vue-router@4"></script>
+
+    <style>
+         
+
+        /* 1. Global Placeholder: Replaces multiple redundant classes for DRY code */
+        .placeholder-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e9ecef; /* A neutral default */
+        }
+        .placeholder-container i {
+            font-size: 4rem; /* A good default size */
+            color: #ced4da;
+        }
+
+        /* Hero & Footer Backgrounds */
+        .hero-section { min-height: 100vh; background-size: cover; background-position: center; position: relative; overflow: hidden; }
+        .hero-section-bg-img { background-image: url("https://images.unsplash.com/photo-1470219556762-1771e7f9427d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDE0fHxjaXR5JTIwYXRJTIwbmlnaHR8ZW58MHx8fHwxNjY2ODg2Nzc0&ixlib=rb-4.0.3&q=80&w=1080"); box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.2); }
+        .hero-section-bg-vid { box-shadow: inset 0 0 0 2000px rgba(255, 255, 255, 0.85); }
+        .hero-section-bg-vid video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
+        .footer-bg { background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://rockrms-assets2.s3.amazonaws.com/images/ContentChannelItemImages/a789bac0b3c34e8c9d28fcfb34e7125e_footer-bg.jpg'); background-size: cover; background-position: center; }
+
+        /* Complex Background Effects */
+        .diagonal-split { position: relative; background-color: #212529; }
+        .diagonal-split::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #f8f9fa; clip-path: polygon(0 0, 50% 0, 40% 100%, 0% 100%); z-index: 0; }
+        .diagonal-split .container { position: relative; z-index: 1; }
+        .bg-icon-overlay { position: relative; z-index: 1; }
+        .bg-icon-overlay::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70%; height: 70%; background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="rgba(255,255,255,0.05)"><path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/><path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/></svg>'); background-repeat: no-repeat; background-position: center; background-size: contain; z-index: -1; }
+        .feature-center-bg { position: relative; z-index: 1; min-height: 50vh; }
+        .feature-center-bg::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" fill="%23e0e0e0" class="bi bi-image" viewBox="0 0 16 16"><path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/><path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/></svg>') no-repeat center center; background-size: contain; opacity: 0.3; z-index: -1; }
+
+        /* Blocks */
+        .block-container {
+            text-decoration: none;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: var(--bs-light);
+            min-height: 30vh;
+            transition: transform .2s ease-in-out, box-shadow .2s ease-in-out;
+        }
+        .block-container:hover { transform: scale(1.01); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15); z-index: 10; }
+        .block-bg-icon {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 8rem;
+            color: var(--bs-secondary);
+            opacity: .35;
+            pointer-events: none;
+        }
+        .block-content { position: relative; text-align: center; }
+
+        .placeholder-container-video {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            width: 100%;
+        }
+        .placeholder-container-video i {
+            font-size: 4rem;
+        }
+        .placeholder-container-video.bg-light i { color: #adb5bd; }
+        .placeholder-container-video.bg-dark i { color: #e9ecef; }
+    
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container-fluid">
+            <div class="row">
+                <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar vh-100 p-3 overflow-auto">
+                    <h4 class="mb-3">Component Library</h4>
+                    <div class="list-group">
+                        <router-link to="/" class="list-group-item list-group-item-action">Home</router-link>
+                        <router-link to="/accordion" class="list-group-item list-group-item-action">Accordions</router-link>
+                        <router-link to="/blocks" class="list-group-item list-group-item-action">Blocks</router-link>
+                        <router-link to="/cards" class="list-group-item list-group-item-action">Cards</router-link>
+                        <router-link to="/connect" class="list-group-item list-group-item-action">Connect Blocks</router-link>
+                        <router-link to="/ctas" class="list-group-item list-group-item-action">CTAs</router-link>
+                        <router-link to="/feature" class="list-group-item list-group-item-action">Feature</router-link>
+                        <router-link to="/footers" class="list-group-item list-group-item-action">Footers</router-link>
+                        <router-link to="/heros" class="list-group-item list-group-item-action">Heros</router-link>
+                        <router-link to="/overlays" class="list-group-item list-group-item-action">Image Overlays</router-link>
+                        <router-link to="/intros" class="list-group-item list-group-item-action">Intros</router-link>
+                        <router-link to="/navbars" class="list-group-item list-group-item-action">Navbars</router-link>
+                        <router-link to="/tabs" class="list-group-item list-group-item-action">Tabs</router-link>
+                        <router-link to="/video" class="list-group-item list-group-item-action">Videos</router-link>
+                    </div>
+                </nav>
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-3 vh-100 overflow-auto">
+                    <router-view></router-view>
+                </main>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Vue App Logic -->
+    <script type="module">
+        const { createApp, onMounted, ref } = Vue;
+        const { createRouter, createWebHashHistory } = VueRouter;
+
+        // --- GLOBAL HELPER FUNCTION FOR BOOTSTRAP COMPONENTS ---
+        const useBootstrap = (componentRoot, selector) => {
+            onMounted(() => {
+                if (componentRoot.value) {
+                    const elements = componentRoot.value.querySelectorAll(selector);
+                    elements.forEach(el => {
+                        if (selector.includes('collapse')) new bootstrap.Collapse(el, { toggle: false });
+                        if (selector.includes('tab')) new bootstrap.Tab(el);
+                        if (selector.includes('dropdown')) new bootstrap.Dropdown(el);
+                    });
+                }
+            });
+        };
+
+        // --- COMPONENT DEFINITIONS (ALL COMPONENTS NOW INCLUDED) ---
+
+        const HomeComponent = {
+            template: `<div class="p-4"><h1 class="mb-4">UI Component Library</h1><p class="lead">Welcome! Select a component from the navigation to see all available variations.</p></div>`
+        };
+
+        const AccordionsComponent = {
+            template: `
+                <div class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+
+                            <!-- Section Header -->
+                            <h2 class="fw-bold mb-3">SECTION TITLE</h2>
+                            <p class="lead mb-5">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.
+                            </p>
+
+                            <!-- Accordion Component -->
+                            <div class="accordion" id="faqAccordion">
+
+                                <!-- Accordion Item 1 (Open by default) -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Panel Title
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapie.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Accordion Item 2 -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            Panel Title
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Accordion Item 3 -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            Panel Title
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Accordion Item 4 -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingFour">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                            Panel Title
+                                        </button>
+                                    </h2>
+                                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>`,
+            setup() {
+                const componentRoot = ref(null);
+                useBootstrap(componentRoot, '[data-bs-toggle="collapse"]');
+                return { componentRoot };
+            }
+        };
+         
+        const BlocksComponent = {
+            template: `
+                <div>
+                    <section class="py-5 my-5">
+                        <h3 class="text-center mb-4">6-Block Grid with Links</h3>
+                        <div class="container-fluid">
+                            <div class="row g-0">
+                                <div class="col-md-4 border-end border-bottom" v-for="n in 3" :key="'row1-' + n">
+                                    <a href="#" class="block-container text-decoration-none">
+                                        <div class="block-bg-icon"><i class="bi bi-image"></i></div>
+                                        <div class="block-content"><h5 class="text-dark fw-bold text-uppercase m-0">Lorem Ipsum Link {{ n }}</h5></div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4" :class="{'border-end': n < 3}" v-for="n in 3" :key="'row2-' + n">
+                                     <a href="#" class="block-container text-decoration-none">
+                                        <div class="block-bg-icon"><i class="bi bi-image"></i></div>
+                                        <div class="block-content"><h5 class="text-dark fw-bold text-uppercase m-0">Lorem Ipsum Link {{ n + 3 }}</h5></div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="text-center my-4">3-Block Grid with Links</h3>
+                        <div class="container-fluid">
+                            <div class="row g-0">
+                                <div class="col-md-4 border-end border-bottom" v-for="n in 3" :key="'row1-' + n">
+                                    <a href="#" class="block-container text-decoration-none">
+                                        <div class="block-bg-icon"><i class="bi bi-image"></i></div>
+                                        <div class="block-content"><h5 class="text-dark fw-bold text-uppercase m-0">Lorem Ipsum Link {{ n }}</h5></div>
+                                    </a>
+                                </div>
+                                 
+                            </div>
+                        </div>
+                        <h3 class="text-center my-4">6-Block Grid with Links and Buttons</h3>
+                        <div class="container-fluid">
+                            <div class="row g-0">
+                                <div class="col-md-4 border-end border-bottom" v-for="n in 3" :key="'row1-' + n">
+                                    <a href="#" class="block-container text-decoration-none">
+                                        <div class="block-bg-icon"><i class="bi bi-image"></i></div>
+                                        <div class="block-content"><h5 class="text-dark fw-bold text-uppercase m-0">Lorem Ipsum Link {{ n }}</h5></div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4" :class="{'border-end': n < 3}" v-for="n in 3" :key="'row2-' + n">
+                                     <a href="#" class="block-container text-decoration-none">
+                                        <div class="block-bg-icon"><i class="bi bi-image"></i></div>
+                                        <div class="block-content"><h5 class="text-dark fw-bold text-uppercase m-0">Lorem Ipsum Link {{ n + 3 }}</h5></div>
+                                    </a>
+                                    <a href="#" class="btn btn-primary mt-auto">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `
+        };
+
+        const CardsComponent = {
+            template: `
+                <div class="container my-5">
+                    <h3 class="text-center mb-4">Profile Cards</h3>
+                    <div class="row gy-4 mb-5">
+                        <div class="col-md-4" v-for="n in 3" :key="n">
+                            <div class="card h-100 text-center border-0 shadow-sm">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="placeholder-container rounded-circle mx-auto mb-3 bg-dark" style="width: 120px; height: 120px;"><i class="bi bi-image text-white-50 fs-1"></i></div>
+                                    <h5 class="card-title">Jane Doe</h5>
+                                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum</p>
+                                    <p class="mt-auto pt-3"><a href="#" class="btn btn-primary w-100">Topic: Lorem ipsum dolor sit amet</a></p>
+                                    <a href="#" class="text-dark">Bio link →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="text-center mb-4">Standard Cards</h3>
+                    <div class="row gy-4 mb-5">
+                        <div class="col-md-4" v-for="n in 3" :key="n">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="placeholder-container card-img-top bg-dark" style="min-height: 180px;"><i class="bi bi-image-alt text-white-50"></i></div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">Card Title</h5>
+                                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis.</p>
+                                    <a href="#" class="btn btn-primary mt-auto">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="text-center mb-4">Event Cards</h3>
+                    <div class="row gy-4">
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="placeholder-container card-img-top" style="min-height: 180px;"><i class="bi bi-image-alt"></i></div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">Card Title</h5>
+                                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small my-3">
+                                        <li><i class="bi bi-calendar-event me-2"></i> Month date, year</li>
+                                        <li><i class="bi bi-clock me-2"></i> 8:00 a.m.</li>
+                                        <li><i class="bi bi-geo-alt me-2"></i> Location</li>
+                                    </ul>
+                                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                    <a href="#" class="btn btn-primary mt-auto">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="placeholder-container card-img-top bg-dark" style="min-height: 180px;"><i class="bi bi-film text-white-50"></i></div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">Card Title</h5>
+                                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small my-3">
+                                        <li><i class="bi bi-calendar-event me-2"></i> Month date, year</li>
+                                        <li><i class="bi bi-clock me-2"></i> 8:00 a.m.</li>
+                                        <li><i class="bi bi-geo-alt me-2"></i> Location</li>
+                                    </ul>
+                                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                    <a href="#" class="btn btn-primary mt-auto">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="placeholder-container card-img-top" style="min-height: 180px;"><i class="bi bi-image-alt"></i></div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">Card Title</h5>
+                                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small my-3">
+                                        <li><i class="bi bi-calendar-event me-2"></i> Month date, year</li>
+                                        <li><i class="bi bi-clock me-2"></i> 8:00 a.m.</li>
+                                        <li><i class="bi bi-geo-alt me-2"></i> Location</li>
+                                    </ul>
+                                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                    <a href="#" class="btn btn-outline-secondary disabled mt-auto">INACTIVE BUTTON</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+       
+        const ConnectsComponent = {
+            template: `
+                <div ref="componentRoot">
+                    <!-- Component 2: Title with Filter Tabs and Cards -->
+                    <section class="py-5">
+                        <div class="container">
+                            <h1 class="display-1 fw-bold text-center text-body-secondary mb-4">CONNECT</h1>
+                            <!-- Filter Tabs -->
+                            <ul class="nav nav-tabs justify-content-center border-0 mb-5" role="tablist">
+                                <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" type="button">THE WOODLANDS</button></li>
+                                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" type="button">WOODFOREST</button></li>
+                                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" type="button">MONTGOMERY</button></li>
+                                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" type="button">CREEKSIDE</button></li>
+                            </ul>
+                            <!-- Card Grid -->
+                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                                <!-- Large Cards -->
+                                <div class="col" v-for="n in 3" :key="'large-' + n">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="placeholder-container card-img-top" style="min-height: 200px;"><i class="bi bi-image"></i></div>
+                                        <div class="card-body p-4">
+                                            <h5 class="card-title fw-bold">Card Title</h5>
+                                            <p class="small mb-2"><strong>Campus Location:</strong> <span class="badge rounded-pill text-bg-secondary fw-normal">The Woodlands</span></p>
+                                            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate.</p>
+                                        </div>
+                                        <div class="card-footer bg-white border-0 p-4 pt-0"><a href="#" class="btn btn-primary rounded-pill px-4">BUTTON TEXT</a></div>
+                                    </div>
+                                </div>
+                                <!-- Small Cards -->
+                                <div class="col" v-for="n in 3" :key="'small-' + n">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-body d-flex align-items-center p-3">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="placeholder-container rounded" style="width: 70px; height: 70px;"><i class="bi bi-image fs-4"></i></div>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="fw-bold">Card Title</h6>
+                                                <p class="card-text small mb-0"><strong>Campus:</strong> The Woodlands<br>Lorem ipsum dolor sit amet...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `,
+            setup() {
+                const componentRoot = ref(null);
+                useBootstrap(componentRoot, '[data-bs-toggle="tab"]');
+                return { componentRoot };
+            }
+        };
+
+        const CtasComponent = {
+            template: `
+                <!-- CTA 1: Image Left, Text and Button Right -->
+    <section class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row align-items-center justify-content-center g-4">
+                <div class="col-auto">
+                    <div class="placeholder-container rounded-circle" style="height: 150px; width: 150px;">
+                        <!-- Content can be an <img> or just the background -->
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="fw-bold">CTA HEADER</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse.</p>
+                    <a href="#" class="btn btn-primary mt-2">BUTTON TEXT</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="my-5"></div>
+
+    <!-- CTA 2: Text Left, Button Right -->
+    <section class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row align-items-center justify-content-center g-4">
+                <div class="col-md-8">
+                    <h3 class="fw-bold">CTA Header</h3>
+                    <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse.</p>
+                </div>
+                <div class="col-md-auto">
+                    <a href="#" class="btn btn-primary btn-lg">BUTTON TEXT</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   
+
+    <div class="my-5"></div>
+
+    <!-- CTA 4: Three Featurettes -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="p-4 bg-white rounded shadow-sm">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0 me-3">
+                                <div class="placeholder-container rounded" style="width: 80px; height: 80px; min-height: auto;">
+                                    <i class="bi bi-image fs-4"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="fw-bold">Featurette Title</h5>
+                                <p class="small">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores iure ea sapiente illo error non veritatis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="p-4 bg-white rounded shadow-sm">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0 me-3">
+                                <div class="placeholder-container rounded" style="width: 80px; height: 80px; min-height: auto;">
+                                    <i class="bi bi-image fs-4"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="fw-bold">Featurette Title</h5>
+                                <p class="small">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores iure ea sapiente illo error non veritatis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="p-4 bg-white rounded shadow-sm">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0 me-3">
+                                <div class="placeholder-container rounded" style="width: 80px; height: 80px; min-height: auto;">
+                                    <i class="bi bi-image fs-4"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="fw-bold">Featurette Title</h5>
+                                <p class="small">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores iure ea sapiente illo error non veritatis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="my-5"></div>
+
+    <!-- CTA 5: Centered Text and Button -->
+    <section class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse.</p>
+                    <a href="#" class="btn btn-primary mt-3">BUTTON TEXT</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="my-5"></div>
+
+    <!-- CTA 6: Simple Text Only -->
+    <section class="bg-dark text-white py-4">
+        <div class="container">
+             <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <div class="my-5"></div>
+
+    <!-- CTA 3: Diagonal Split Contact (with custom CSS) -->
+    <section class="diagonal-split">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-dark text-center d-flex flex-column align-items-center justify-content-center py-5">
+                    <div class="placeholder-container rounded mb-3 bg-white border">
+                         <i class="bi bi-image"></i>
+                    </div>
+                    <h2 class="fw-bold">CONTACT US</h2>
+                </div>
+                <div class="col-md-6 text-white d-flex flex-column justify-content-center py-5 ps-md-5">
+                    <ul class="list-unstyled fs-5">
+                        <li class="mb-3"><i class="bi bi-telephone-fill me-3"></i> Call us: 123.456.5678</li>
+                        <li class="mb-3"><i class="bi bi-chat-left-dots-fill me-3"></i> Leave us a message</li>
+                        <li class="mb-3"><i class="bi bi-facebook me-3"></i> Like us on Facebook</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="my-5"></div>
+
+    <!-- CTA 7: Simple Contact -->
+    <section class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row align-items-center justify-content-center g-4">
+                <div class="col-md-4">
+                    <h2 class="fw-bold text-center text-md-start">CONTACT US</h2>
+                </div>
+                <div class="col-md-6">
+                     <ul class="list-unstyled fs-5 mb-0">
+                        <li class="mb-2"><i class="bi bi-telephone-fill me-3"></i> Call us: 123.456.5678</li>
+                        <li class="mb-2"><i class="bi bi-chat-left-dots-fill me-3"></i> Leave us a message</li>
+                        <li><i class="bi bi-facebook me-3"></i> Like us on Facebook</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+            `
+        };
+        
+        const FeatureComponent = {
+            template: `
+                <div class="bg-body-tertiary">
+                    <section class="py-5"> <div class="container"> <div class="row align-items-center g-5"> <div class="col-md-6"> <h1 class="display-2 fw-bold">Text Align Left</h1> <a href="#" class="btn btn-primary mt-3 px-4 py-2">BUTTON TEXT</a> </div> <div class="col-md-6"> <div class="placeholder-container rounded" style="min-height: 300px;"><i></i></div> </div> </div> </div> </section>
+                    <hr class="my-5">
+                    <section class="py-5 feature-center-bg d-flex align-items-center justify-content-center"> <div class="container text-center"> <h1 class="display-2 fw-bold">Text Align Center</h1> <a href="#" class="btn btn-primary mt-3 px-4 py-2">BUTTON TEXT</a> </div> </section>
+                    <hr class="my-5">
+                    <section class="py-5"> <div class="container"> <div class="row align-items-center g-5"> <div class="col-md-6 order-md-2 text-md-end"> <h1 class="display-2 fw-bold">Text Align Right</h1> <a href="#" class="btn btn-primary mt-3 px-4 py-2">BUTTON TEXT</a> </div> <div class="col-md-6 order-md-1"> <div class="placeholder-container rounded" style="min-height: 300px;"><i></i></div> </div> </div> </div> </section>
+                </div>
+            `
+        };
+
+        const FootersComponent = {
+            template: `
+                <footer class="footer-bg text-white pt-5 pb-4">
+                    <div class="container">
+                        <div class="row">
+                            <!-- Left Column: Logos, Address, Social -->
+                            <div class="row gx-5"> <!-- gx-5 adds horizontal gutters -->
+                            <!-- Left Column -->
+                            <div class="col-lg-5 offset-lg-1 col-md-6 offset-md-1 p-5">
+                                <div class="d-flex align-items-center mb-4">
+                                    <img src="https://www.thewoodlandsumc.org/Content/web/twumc-logo.png" alt="The Woodlands Methodist Church Logo" height="60" class="me-4">
+                                    <img src="https://rockrms-assets.s3.us-east-2.amazonaws.com/images/GMC_logo.png" alt="Global Methodist Church Logo" height="60">
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="bi bi-geo-alt-fill me-2"></i> 2200 Lake Woodlands Drive, The Woodlands, TX 77380
+                                    </li>
+                                    <li class="mb-3">
+                                        <i class="bi bi-telephone-fill me-2"></i> (281) 297-5900
+                                    </li>
+                                    <li class="d-flex gap-3 fs-4">
+                                        <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+                                        <a href="#" class="text-white"><i class="bi bi-facebook"></i></a>
+                                        <a href="#" class="text-white"><i class="bi bi-youtube"></i></a>
+                                        <a href="#" class="text-white"><i class="bi bi-mic"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Right Column -->
+                            <div class="col-lg-5 offset-lg-0 col-md-5 offset-md-0 footer-links text-end py-5">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2"><a href="#" class="text-white text-decoration-none">What We Believe</a></li>
+                                            <li class="mb-2"><a href="#" class="text-white text-decoration-none">Facilities</a></li>
+                                            <li class="mb-2"><a href="#" class="text-white text-decoration-none">Employment</a></li>
+                                            <li class="mb-2"><a href="#" class="text-white text-decoration-none">Fireside Cafe</a></li>
+                                            <li class="mb-2"><a href="#" class="text-white text-decoration-none">Indoor Playgrounds</a></li>
+                                            <li class="mb-2"><a href="#" class="text-white text-decoration-none">Funerals & Memorial Services</a></li>
+                                            <li class="mb-2"><a href="#" class="text-white text-decoration-none">Find Help & Support</a></li>
+                                            <li class="mb-2"><a href="#" class="text-white text-decoration-none">My Account</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            `
+        };
+
+        const HerosComponent = {
+            template: `
+              <!-- Hero 1: Smaller text, bottom left -->
+                <section class="hero-section hero-section-bg-img d-flex align-items-end">
+                <div class="container text-white pb-5">
+                    <h1 class="display-4 fw-bold">HEADER</h1>
+                    <p class="lead">Subheaders</p>
+                </div>
+                </section>
+
+                <!-- Hero 2: Largest text, center -->
+                <section class="hero-section hero-section-bg-img d-flex align-items-center justify-content-center">
+                <div class="container text-white text-center">
+                    <h1 class="display-1 fw-bold">HEADER</h1>
+                </div>
+                </section>
+
+                <!-- Hero 3: Largest text, center with button -->
+                <section class="hero-section hero-section-bg-img d-flex align-items-center justify-content-center">
+                <div class="container text-white text-center">
+                    <h1 class="display-1 fw-bold">HEADER</h1>
+                    <button type="button" class="btn btn-primary rounded-1 py-2 px-4 mt-3">
+                    BUTTON TEXT
+                    </button>
+                </div>
+                </section>
+
+                <!-- Hero 4: Background video -->
+                <section class="hero-section hero-section-bg-vid d-flex align-items-center justify-content-center">
+                <video autoplay muted loop playsinline>
+                    <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+                <div class="container text-center">
+                    <h1 class="display-1 fw-bold text-dark">HEADER</h1>
+                </div>
+                </section>
+
+                <!-- Hero 5: Background video with details and button -->
+                <section class="hero-section hero-section-bg-vid d-flex align-items-center justify-content-center">
+                <video autoplay muted loop playsinline>
+                    <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+                <div class="container text-center">
+                    <h1 class="display-1 fw-bold text-dark mb-4">HEADER</h1>
+                    <div class="my-4">
+                    <p class="lead text-body">
+                        DAY MONTH DATE - DAY MONTH DATE<br />
+                        $XX per person (Early bird)<br />
+                        $YY per person (Start Month 1)<br />
+                        <em>Childcare available</em>
+                    </p>
+                    </div>
+                    <button type="button" class="mt-4 btn btn-primary rounded-1 py-2 px-4">
+                    BUTTON TEXT
+                    </button>
+                </div>
+                </section>
+            `
+        };
+        
+        const OverlaysComponent = {
+            template: `
+                <!-- Component 1: Text Overlay on Background -->
+                <section class="py-5 bg-white">
+                    <div class="container">
+                        <h2 class="text-center fw-bold mb-5">Text Overlay on Background</h2>
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            <div class="col">
+                                <div class="bg-dark text-white p-5 rounded h-100 bg-icon-overlay">
+                                    <h3 class="fw-bold">SECTION TITLE</h3>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                    <a href="#" class="btn btn-primary mt-3">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="bg-dark text-white p-5 rounded h-100 bg-icon-overlay">
+                                    <h3 class="fw-bold">SECTION TITLE</h3>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                    <a href="#" class="btn btn-primary mt-3">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+
+                <!-- Component 2: Icon Feature on Background -->
+                <section class="py-5 bg-white">
+                    <div class="container">
+                        <h2 class="text-center fw-bold mb-5">Icon Feature on Background</h2>
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            <div class="col">
+                                <div class="bg-dark text-white p-5 rounded h-100 bg-icon-overlay">
+                                    <div class="rounded-circle bg-light text-dark d-flex align-items-center justify-content-center fw-bold mb-4" style="width: 70px; height: 70px;">ICON</div>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                    <a href="#" class="btn btn-primary mt-3">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="bg-dark text-white p-5 rounded h-100 bg-icon-overlay">
+                                    <div class="rounded-circle bg-light text-dark d-flex align-items-center justify-content-center fw-bold mb-4" style="width: 70px; height: 70px;">ICON</div>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                    <a href="#" class="btn btn-primary mt-3">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+
+                <!-- Component 3: Mixed Column Layouts -->
+                <section class="py-5 bg-white">
+                    <div class="container">
+                        <h2 class="text-center fw-bold mb-5">Mixed Column Layouts on Background</h2>
+                        <div class="row g-4">
+                            <!-- Full Width Component -->
+                            <div class="col-12">
+                                <div class="bg-dark text-white p-5 rounded bg-icon-overlay">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-7">
+                                            <div class="rounded-circle bg-light text-dark d-flex align-items-center justify-content-center fw-bold mb-4" style="width: 70px; height: 70px;">ICON</div>
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus.</p>
+                                            <a href="#" class="btn btn-primary mt-3">BUTTON TEXT</a>
+                                        </div>
+                                        <div class="col-md-5 d-none d-md-flex justify-content-center align-items-center">
+                                            <!-- This is a content image, not a background, but we make it faint to match the style -->
+                                            <i class="bi bi-image display-1 text-white-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Half Width Components -->
+                            <div class="col-md-6">
+                                <div class="bg-dark text-white p-5 rounded h-100 bg-icon-overlay">
+                                    <div class="rounded-circle bg-light text-dark d-flex align-items-center justify-content-center fw-bold mb-4" style="width: 70px; height: 70px;">ICON</div>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere.</p>
+                                    <a href="#" class="btn btn-primary mt-3">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-dark text-white p-5 rounded h-100 bg-icon-overlay">
+                                    <div class="rounded-circle bg-light text-dark d-flex align-items-center justify-content-center fw-bold mb-4" style="width: 70px; height: 70px;">ICON</div>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere.</p>
+                                    <a href="#" class="btn btn-primary mt-3">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `
+        };
+
+        const IntrosComponent = {
+            template: `
+                <!-- Section 1: Centered Text and Button -->
+                <section class="py-5">
+                    <div class="container text-center" >
+                        <h2 class="fw-bold mb-4">SECTION TITLE</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus..</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                        <a href="#" class="btn btn-primary mt-3 px-4 py-2">BUTTON TEXT</a>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+
+                    <!-- Section 1: Text and Button align left-->
+                <section class="py-5">
+                    <div class="container text-left" >
+                        <h2 class="fw-bold mb-4">SECTION TITLE</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus..</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                        <a href="#" class="btn btn-primary mt-3 px-4 py-2">BUTTON TEXT</a>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+
+                <!-- Section 2: Video Left, Text Right -->
+                <section class="py-5">
+                    <div class="container">
+                        <div class="row align-items-center g-5">
+                            <div class="col-md-6">
+                                <div class="placeholder-container bg-dark rounded">
+                                    <i class="bi bi-play-circle"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h2 class="fw-bold mb-4">SECTION TITLE</h2>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                <a href="#" class="btn btn-primary mt-3 px-4 py-2">BUTTON TEXT</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+
+                <!-- Section 3: Text Top, Video Bottom -->
+                <section class="py-5">
+                    <div class="container text-center" >
+                        <h2 class="fw-bold mb-4">SECTION TITLE</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                        <div class="placeholder-container bg-dark rounded mt-5">
+                            <i class="bi bi-play-circle"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+
+                <!-- Section 4: Image Left, Text Right -->
+                <section class="py-5">
+                    <div class="container">
+                        <div class="row align-items-center g-5">
+                            <div class="col-md-6">
+                                <div class="placeholder-container bg-light rounded">
+                                    <i class="bi bi-image"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h2 class="fw-bold mb-4">SECTION TITLE</h2>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                <a href="#" class="btn btn-primary mt-3 px-4 py-2">BUTTON TEXT</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+
+                <!-- Section 5: Video Top, Text Bottom, Two Buttons -->
+                <section class="py-5">
+                    <div class="container text-center" >
+                        <div class="placeholder-container bg-dark rounded mb-5">
+                            <i class="bi bi-play-circle"></i>
+                        </div>
+                        <h2 class="fw-bold mb-4">SECTION TITLE</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                        <div class="mt-4">
+                            <a href="#" class="btn btn-primary px-4 py-2">BUTTON TEXT</a>
+                            <a href="#" class="btn btn-primary px-4 py-2">BUTTON TEXT</a>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+
+                <!-- Section 6: Text Left, Contact Card Right -->
+                <section class="py-5">
+                    <div class="container">
+                        <div class="row align-items-center g-5">
+                            <div class="col-md-7">
+                                <h2 class="fw-bold mb-4">SECTION TITLE</h2>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="card">
+                                    <div class="card-header bg-dark text-white fs-5 fw-bold">
+                                        Contact
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item fs-5"><i class="bi bi-telephone-fill me-3"></i> Call us: 123.456</li>
+                                        <li class="list-group-item fs-5"><i class="bi bi-chat-left-dots-fill me-3"></i> Leave us a message</li>
+                                        <li class="list-group-item fs-5"><i class="bi bi-facebook me-3"></i> Like us on Facebook</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+                
+                <!-- Section 7: Volunteer Section -->
+                <section class="py-5 bg-light">
+                    <div class="container">
+                        <div class="row align-items-center g-5">
+                            <div class="col-md-7">
+                                <h2 class="fw-bold mb-4">VOLUNTEER WITH US!</h2>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                <div class="mt-4">
+                                    <a href="#" class="btn btn-secondary px-4 py-2">Have Questions?</a>
+                                    <a href="#" class="btn btn-primary px-4 py-2">Sign Up Now</a>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="placeholder-container bg-white rounded border">
+                                    <i class="bi bi-image" style="color: #ced4da;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `
+        };
+
+        const NavbarsComponent = {
+            template: `
+            <!-- Top Row -->
+                <div class="bg-light border-bottom py-2">
+                <div class="container d-flex justify-content-end gap-3 small fw-bold">
+                    <a href="#" class="text-secondary text-decoration-none">The Woodlands</a>
+                    <a href="#" class="text-secondary text-decoration-none">Woodforest</a>
+                    <a href="#" class="text-secondary text-decoration-none">Montgomery</a>
+                    <a href="#" class="text-secondary text-decoration-none">Creekside</a>
+                    <a href="#" class="text-secondary text-decoration-none">Español</a>
+                </div>
+                </div>
+
+                <!-- Main Navbar -->
+                <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
+                <div class="container">
+                    <a class="navbar-brand" href="#">
+                    <img src="https://s3.us-east-2.amazonaws.com/rockrms-assets/images/twms-bug-logo.png" alt="Logo" height="40" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto fw-bold align-items-center">
+                        <li class="nav-item"><a class="nav-link text-uppercase" href="#">Times &amp; Locations</a></li>
+                        <li class="nav-item"><a class="nav-link text-uppercase" href="#">Visit</a></li>
+                        <li class="nav-item"><a class="nav-link text-uppercase" href="#">Grow</a></li>
+                        <li class="nav-item"><a class="nav-link text-uppercase" href="#">Messages</a></li>
+                        <li class="nav-item"><a class="nav-link text-uppercase" href="#">Serve</a></li>
+                        <li class="nav-item"><a class="nav-link text-uppercase" href="#">Give</a></li>
+                        <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-primary btn-sm text-capitalize" href="#">Login</a>
+                        </li>
+                        <li class="nav-item dropdown ms-lg-2">
+                        <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-list fs-4"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 400px;">
+                            <div class="row">
+                            <div class="col-6">
+                                <h6 class="fw-bold">Header 1</h6>
+                                <ul class="list-unstyled">
+                                <li><a class="dropdown-item" href="#">Link 1</a></li>
+                                <li><a class="dropdown-item" href="#">Link 2</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="fw-bold">Header 2</h6>
+                                <ul class="list-unstyled">
+                                <li><a class="dropdown-item" href="#">Link 3</a></li>
+                                <li><a class="dropdown-item" href="#">Link 4</a></li>
+                                </ul>
+                            </div>
+                            </div>
+                        </div>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+                </nav>`,
+            setup() {
+                const componentRoot = ref(null);
+                useBootstrap(componentRoot, '[data-bs-toggle="collapse"], [data-bs-toggle="dropdown"]');
+                return { componentRoot };
+            }
+        };
+
+        const TabsComponent = {
+            template: `
+              <div class="container my-5">
+ 
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-the-woodlands-tab" data-bs-toggle="pill" data-bs-target="#pills-the-woodlands" type="button" role="tab" aria-controls="pills-the-woodlands" aria-selected="true">THE WOODLANDS</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-dark" id="pills-woodforest-tab" data-bs-toggle="pill" data-bs-target="#pills-woodforest" type="button" role="tab" aria-controls="pills-woodforest" aria-selected="false">WOODFOREST</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-dark" id="pills-montgomery-tab" data-bs-toggle="pill" data-bs-target="#pills-montgomery" type="button" role="tab" aria-controls="pills-montgomery" aria-selected="false">MONTGOMERY</button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content border p-4" id="pills-tabContent">
+            <!-- The Woodlands Content (Initially Active) -->
+            <div class="tab-pane fade show active" id="pills-the-woodlands" role="tabpanel" aria-labelledby="pills-the-woodlands-tab" tabindex="0">
+                <h2 class="h4">THE WOODLANDS SECTION</h2>
+                <p>This is the content for The Woodlands. Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis.</p>
+            </div>
+
+            <!-- Woodforest Content (Accordion) -->
+            <div class="tab-pane fade" id="pills-woodforest" role="tabpanel" aria-labelledby="pills-woodforest-tab" tabindex="0">
+ 
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          Panel Title
+                        </button>
+                      </h2>
+                      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          Panel Title
+                        </button>
+                      </h2>
+                      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          Content for the second panel.
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Montgomery Content -->
+            <div class="tab-pane fade" id="pills-montgomery" role="tabpanel" aria-labelledby="pills-montgomery-tab" tabindex="0">
+                <h2 class="h4">MONTGOMERY SECTION</h2>
+                <p>This is the content for Montgomery.</p>
+            </div>
+        </div>
+    </div>
+            `,
+            setup() {
+                const componentRoot = ref(null);
+                useBootstrap(componentRoot, '[data-bs-toggle="pill"]');
+                return { componentRoot };
+            }
+        };
+
+        const VideosComponent = {
+            template: `
+                <!-- Component 1: Simple Horizontal Cards -->
+                <section class="py-5 bg-white">
+                    <div class="container">
+                        <h2 class="text-center fw-bold mb-5">Horizontal Cards with Padded Image</h2>
+                        <div class="row row-cols-1 row-cols-lg-2 g-4">
+                            <div class="col">
+                                <div class="card h-100 border-0 bg-light overflow-hidden">
+                                    <div class="row g-0 h-100">
+                                        <div class="col-md-5 d-flex align-items-center justify-content-center p-3">
+                                            <div class="placeholder-container-video bg-white rounded w-100 h-100"><i class="bi bi-image"></i></div>
+                                        </div>
+                                        <div class="col-md-7 d-flex flex-column">
+                                            <div class="card-body p-4">
+                                                <h5 class="card-title fw-bold">Card Title</h5>
+                                                <p class="card-text small">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus.</p>
+                                            </div>
+                                            <div class="card-footer bg-transparent border-0 p-4 pt-0 mt-auto"><a href="#" class="btn btn-primary">BUTTON TEXT</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 border-0 bg-light overflow-hidden">
+                                    <div class="row g-0 h-100">
+                                        <div class="col-md-5 d-flex align-items-center justify-content-center p-3">
+                                            <div class="placeholder-container-video bg-white rounded w-100 h-100"><i class="bi bi-image"></i></div>
+                                        </div>
+                                        <div class="col-md-7 d-flex flex-column">
+                                            <div class="card-body p-4">
+                                                <h5 class="card-title fw-bold">Card Title</h5>
+                                                <p class="card-text small">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus.</p>
+                                            </div>
+                                            <div class="card-footer bg-transparent border-0 p-4 pt-0 mt-auto"><a href="#" class="btn btn-primary">BUTTON TEXT</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+
+                <!-- Component 2: Cards with Padded Frame -->
+                <section class="py-5 bg-white">
+                    <div class="container">
+                        <h2 class="text-center fw-bold mb-5">Cards within a Padded Column Frame</h2>
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            <div class="col">
+                                <div class="bg-light p-4 rounded h-100">
+                                    <div class="card h-100 border-0">
+                                        <div class="placeholder-container-video bg-white card-img-top"><i class="bi bi-image"></i></div>
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold">Card Title</h5>
+                                            <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mt-3">
+                                                <li><i class="bi bi-calendar-event me-2"></i> Month date, year</li>
+                                                <li><i class="bi bi-clock me-2"></i> 8:00 a.m.</li>
+                                                <li><i class="bi bi-geo-alt me-2"></i> Location</li>
+                                            </ul>
+                                            <p class="card-text mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis.</p>
+                                        </div>
+                                        <div class="card-footer bg-white border-0 pt-0"><a href="#" class="btn btn-primary">BUTTON TEXT</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="bg-light p-4 rounded h-100">
+                                    <div class="card h-100 border-0">
+                                        <div class="placeholder-container-video bg-dark card-img-top"><i class="bi bi-film"></i></div>
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold">Card Title</h5>
+                                            <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mt-3">
+                                                <li><i class="bi bi-calendar-event me-2"></i> Month date, year</li>
+                                                <li><i class="bi bi-clock me-2"></i> 8:00 a.m.</li>
+                                                <li><i class="bi bi-geo-alt me-2"></i> Location</li>
+                                            </ul>
+                                            <p class="card-text mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis.</p>
+                                        </div>
+                                        <div class="card-footer bg-white border-0 pt-0"><a href="#" class="btn btn-primary">BUTTON TEXT</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+
+                <!-- Component 3: Standard Cards with Flush Image -->
+                <section class="py-5 bg-white">
+                    <div class="container  ">
+                        <h2 class="text-center fw-bold mb-5">Standard Card with Flush Image/Video</h2>
+                        <div class="row row-cols-1 row-cols-md-2 g-4   ">
+                            <div class="col  bg-white">
+                                <div class="card h-100 border-0   bg-light">
+                                    <div class="placeholder-container-video   card-img-top"><i class="bi bi-image"></i></div>
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title fw-bold ">Card Title</h5>
+                                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                    </div>
+                                    <div class="card-footer   bg-light border-0 p-4 pt-0"><a href="#" class="btn btn-primary">BUTTON TEXT</a></div>
+                                </div>
+                            </div>
+                            <div class="col  bg-white">
+                                <div class="card h-100 border-0   bg-light">
+                                    <div class="placeholder-container-video bg-dark card-img-top"><i class="bi bi-film"></i></div>
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title fw-bold ">Card Title</h5>
+                                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                    </div>
+                                    <div class="card-footer   bg-light border-0 p-4 pt-0"><a href="#" class="btn btn-primary">BUTTON TEXT</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-5">
+
+                <!-- Component 4: "Cardless" Layout with Meta -->
+                <section class="py-5  "style="background: white !impoartant">
+                    <div class="container  " >
+                        <h2 class="text-center fw-bold mb-5">'Cardless' Layout with Metadata (No Card Component)</h2>
+                        <div class="row row-cols-1 row-cols-md-2 g-5 bg-white" >
+                            <div class="col">
+                                <div class="placeholder-container-video bg-light rounded"><i class="bi bi-image"></i></div>
+                                <div class="py-4">
+                                    <h5 class="fw-bold">Card Title</h5>
+                                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mt-3">
+                                        <li><i class="bi bi-calendar-event me-2"></i> Month date, year</li>
+                                        <li><i class="bi bi-clock me-2"></i> 8:00 a.m.</li>
+                                        <li><i class="bi bi-geo-alt me-2"></i> Location</li>
+                                    </ul>
+                                    <p class="mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis.</p>
+                                    <a href="#" class="btn btn-primary mt-2">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="placeholder-container-video bg-dark rounded"><i class="bi bi-film"></i></div>
+                                <div class="py-4">
+                                    <h5 class="fw-bold">Card Title</h5>
+                                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mt-3">
+                                        <li><i class="bi bi-calendar-event me-2"></i> Month date, year</li>
+                                        <li><i class="bi bi-clock me-2"></i> 8:00 a.m.</li>
+                                        <li><i class="bi bi-geo-alt me-2"></i> Location</li>
+                                    </ul>
+                                    <p class="mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis.</p>
+                                    <a href="#" class="btn btn-primary mt-2">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <hr class="my-5">
+
+                <!-- Component 5: "Cardless" Simple Layout -->
+                <section class="py-5 bg-white" style="background: white">
+                    <div class="container ">
+                        <h2 class="text-center fw-bold mb-5">'Cardless' Simple Layout (No Card Component)</h2>
+                        <div class="row row-cols-1 row-cols-md-2 g-5">
+                            <div class="col">
+                                <div class="placeholder-container-video bg-light rounded"><i class="bi bi-image"></i></div>
+                                <div class="py-4">
+                                    <h5 class="fw-bold">Card Title</h5>
+                                    <p class="mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                    <a href="#" class="btn btn-primary mt-2">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="placeholder-container-video bg-dark rounded"><i class="bi bi-film"></i></div>
+                                <div class="py-4">
+                                    <h5 class="fw-bold">Card Title</h5>
+                                    <p class="mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda earum cum asperiores voluptate iure ea sapiente illo error non veritatis. Tempora laudantium esse, tenetur placeat perferendis facere, maxime sed veritatis temporibus voluptate quasi, totam natus.</p>
+                                    <a href="#" class="btn btn-primary mt-2">BUTTON TEXT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `
+        };
+
+        const routes = [
+            { path: '/', component: HomeComponent },
+            { path: '/accordion', component: AccordionsComponent },
+            { path: '/blocks', component: BlocksComponent },
+            { path: '/cards', component: CardsComponent },
+            { path: '/connect', component: ConnectsComponent },
+            { path: '/ctas', component: CtasComponent },
+            { path: '/feature', component: FeatureComponent },
+            { path: '/footers', component: FootersComponent },
+            { path: '/heros', component: HerosComponent },
+            { path: '/overlays', component: OverlaysComponent },
+            { path: '/intros', component: IntrosComponent },
+            { path: '/navbars', component: NavbarsComponent },
+            { path: '/tabs', component: TabsComponent },
+            { path: '/video', component: VideosComponent },
+        ];
+       
+        const router = createRouter({ history: createWebHashHistory(), routes });
+        const app = createApp({});
+        app.use(router);
+        app.mount('#app');
+    </script>
+</body>
+</html>
